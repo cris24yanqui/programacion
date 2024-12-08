@@ -24,9 +24,18 @@ def jugar_piedra_papel_tijera():
   else:
     print("¡Perdiste!")
 
+
+def jugar_varias_rondas(num_rondas):
+  """
+  Función para jugar varias rondas de piedra, papel o tijera.
+  """
+  for i in range(num_rondas):
+    print(f"\nRonda {i+1}")
+    jugar_piedra_papel_tijera()
+
 if __name__ == "__main__":
   while True:
-    jugar_piedra_papel_tijera()
+    jugar_varias_rondas(3)  # Jugar 3 rondas
     jugar_de_nuevo = input("¿Quieres jugar de nuevo? (s/n): ").lower()
     while jugar_de_nuevo not in ["s", "n"]:
       jugar_de_nuevo = input("Opción inválida. ¿Quieres jugar de nuevo? (s/n): ").lower()

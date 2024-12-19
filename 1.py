@@ -1,43 +1,52 @@
 import random
 
-def jugar_piedra_papel_tijera():
-  """
-  Función para jugar piedra, papel o tijera contra la computadora.
-  """
+reglas = {
+    "piedra": {"tijera": "ganaste", "papel": "perdiste"},
+    "papel": {"piedra": "ganaste", "tijera": "perdiste"},
+    "tijera": {"papel": "ganaste", "piedra": "perdiste"}
+}
 
-  opciones = ["piedra", "papel", "tijera"]
-  usuario = input("Elige piedra, papel o tijera: ").lower()
+def obtener_eleccion_usuario():
+    """Obtiene la elección del usuario con validación de entrada."""
+    opciones = ["piedra", "papel", "tijera"]
+    while True:
+        try:
+            eleccion = input("Elige piedra, papel o tijera: ").lower()
+            if eleccion in opciones:
+                return eleccion
+            else:
+                print("Opción inválida. Intenta de nuevo.")
+        except ValueError:
+            print("Entrada inválida. Intenta de nuevo.")
 
-  while usuario not in opciones:
-    usuario = input("Opción inválida. Elige piedra, papel o tijera: ").lower()
+def obtener_eleccion_computadora():
+    """Genera una elección aleatoria para la computadora."""
+    opciones = ["piedra", "papel", "tijera"]
+    return random.choice(opciones)
 
-  computadora = random.choice(opciones)
+def determinar_ganador(usuario, computadora):
+    """Determina el ganador de la ronda."""
+    resultado = reglas.get(usuario, {}).get(computadora)
+    if resultado:
+        return resultado.capitalize()
+    elif usuario == computadora:
+        return "Empate"
 
-  print(f"La computadora eligió {computadora}.")
-
-  if usuario == computadora:
-    print("Empate!")
-  elif (usuario == "piedra" and computadora == "tijera") or \
-       (usuario == "papel" and computadora == "piedra") or \
-       (usuario == "tijera" and computadora == "papel"):
-    print("¡Ganaste!")
-  else:
-    print("¡Perdiste!")
-
-
-def jugar_varias_rondas(num_rondas):
-  """
-  Función para jugar varias rondas de piedra, papel o tijera.
-  """
-  for i in range(num_rondas):
-    print(f"\nRonda {i+1}")
-    jugar_piedra_papel_tijera()
+def jugar_ronda():
+    """Juega una ronda de piedra, papel o tijera."""
+    usuario = obtener_eleccion_usuario()
+    computadora = obtener_eleccion_computadora()
+    print(f"La computadora eligió {computadora}.")
+    resultado = determinar_ganador(usuario, computadora)
+    print(f"¡{resultado}!")
 
 if __name__ == "__main__":
-  while True:
-    jugar_varias_rondas(3)  # Jugar 3 rondas
-    jugar_de_nuevo = input("¿Quieres jugar de nuevo? (s/n): ").lower()
-    while jugar_de_nuevo not in ["s", "n"]:
-      jugar_de_nuevo = input("Opción inválida. ¿Quieres jugar de nuevo? (s/n): ").lower()
-    if jugar_de_nuevo == "n":
-      break
+    while True:
+        jugar_ronda()
+        jugar_de_nuevo = input("¿Quieres jugar de nuevo? (s/n): ").lower()
+        while jugar_de_nuevo not in ["s", "n"]:
+            jugar_de_nuevo = input("Opción inválida. ¿Quieres jugar de nuevo? (s/n): ").lower()
+        if jugar_de_nuevo == "n":
+            print("¡Gracias por jugar!")
+            break
+          
